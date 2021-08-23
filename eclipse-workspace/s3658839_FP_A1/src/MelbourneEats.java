@@ -65,6 +65,7 @@ public class MelbourneEats {
 				break;
 			case "CategoryMenu":
 				this.showMenu(menuType);
+				
 				break;
 			case "RestaurantSearchMenu":
 				this.showMenu(menuType);
@@ -108,7 +109,57 @@ public class MelbourneEats {
 //							break;
 //							
 //			}
+			
+			while(menuType == "CategoryMenu")
+			{
+				System.out.print("Please select a category: ");
+				menuSelection = readUserInput();
+				
+				while(!isNumeric(menuSelection)) {
+					System.out.println("Please enter a proper number:");
+					menuSelection = readUserInput();
+				}
+				menuSelectionNum = Integer.parseInt(menuSelection);
+
+				if(menuSelectionNum == 1)
+				{
+					menuType = "Restaurant";
+				}
+				if(menuSelectionNum == 2)
+				{
+					menuType = "Cafe";
+				}
+				if(menuSelectionNum == 3) {
+					menuType = "Fast food";
+				}
+				if(menuSelectionNum == 4)
+				{
+					menuType = "Exit"; 
+				}
+					System.out.println("this is what you are passing" + menuType);
+				showFoodCategory(menuType);
+			
+//				switch(menuType) {
+//				case "Restaurant":
+//					this.showMenu(menuType);
+//					break;
+//				case "Cafe":
+//					this.showMenu(menuType);
+//					
+//					break;
+//				case "FastFood":
+//					this.showMenu(menuType);
+//					break;
+//					
+//				case "Exit":
+//					this.exit = true;
+//					System.out.println("goodbye");
+//				}
+			}
 		} while (!this.exit);	
+		
+		
+		
 	
 	}
 	/**
@@ -131,20 +182,32 @@ public class MelbourneEats {
     		Restaurant restaurant = new Restaurant(resInfo[0],resInfo[1],deliveryFee);
     		ArrayList<Food> arrFoods = new ArrayList<Food>();
     		
+    		String food1 = resInfo[3];
     		
-    		
-    		String[] foodInfo = resInfo[3].split(",");
-    		
-    		String[] priceName;
-    		double thePrice;
-    		
-    		for(int i = 0; i < foodInfo.length; i++) {
-    			 priceName = foodInfo[i].split("-", 2);
-    			 stringAmount = priceName[1].replace("$","");
-    			 
-    			 thePrice = Double.parseDouble(stringAmount);
-    			
-//    			ArrayList<Food> arrFood =new ArrayList<Food>(priceName[0],thePrice);
+    		// split the string by comma so that every food is an element in an array 
+    		String[] restaurantFoods = food1.split(",");
+
+    		// for every food that exists in the restaurantFood array do the following for each individual food 
+    		for(String restaurantFood : restaurantFoods)	{
+
+    		// split the element in the array by - so that the first element is the food name the second element is the food price
+    		String[] foodInfo = restaurantFood.split("-", 2);
+
+    		//declare a variable to contain the food name
+    		String foodName = foodInfo[0];
+
+    		// remove the dollar sign from the food price string
+    		String strFoodPrice= foodInfo[1].replace("$","");
+
+    		//convert the food price string into a double 
+    		double foodPrice = Double.parseDouble(strFoodPrice);
+
+    		// create a new Food class instance and pass the foodName and foodPrice variables as parameters
+    		Food food = new Food(foodName,foodPrice);
+
+    		//add the new food class instance to the arrayList of foods that will be passed to the restaurant class
+    		arrFoods.add(food);
+
     		}
     		
     		/*
@@ -223,6 +286,7 @@ public class MelbourneEats {
 			System.out.printf("   %s%n", "2) Cafe");
 			System.out.printf("   %s%n", "3) Fast food");
 			System.out.printf("   %s%n", "4) Exit");
+			menuType = "category";
 			break;
 			
 		case "RestaurantSearchMenu":
@@ -243,7 +307,21 @@ public class MelbourneEats {
     	for(Restaurant res: this.arrRestaurants) {
 			System.out.println(res.getName());
 		}
+    	    
+    
 	}
+    
+  public void showFoodCategory(String category) {
+	  
+	 
+		  for(Restaurant res: this.arrRestaurants) {
+			
+			  if(category.equals(res.getCategory()))	{
+				  			 
+			  System.out.println(res.getName());
+			  }
+			}
+    }
     
 }
 

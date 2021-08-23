@@ -23,6 +23,10 @@ public class Restaurant {
 		
 	}
 	
+	public String getCategory() {
+		
+		return this.category;
+	}
 	
 	
 
